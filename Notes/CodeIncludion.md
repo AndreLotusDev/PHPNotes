@@ -57,6 +57,27 @@ This code is highly unrecommended because some server can not work
 
 To configure this, change the php.ini short_open_tag=Off then turn on
 
+```php
+<?= echo "teste"; ?>
 ```
-<? echo "teste"; ?>
+
+---
+
+# Code show
+
+Example 
+
+```php
+<?= "teste" ?>
+```
+
+---
+
+# HTML + PHP
+
+```php
+<?php
+$name = "John Doe";
+echo "<p>Hello, $name</p>";
+?>
 ```
