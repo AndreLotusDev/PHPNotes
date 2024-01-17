@@ -162,3 +162,58 @@ $myCar->stopEngine();
 ```
 
 ---
+
+# Traits
+
+```php
+trait Engine {
+    public function startEngine() {
+        echo "Engine started\n";
+    }
+
+    public function stopEngine() {
+        echo "Engine stopped\n";
+    }
+}
+
+class Car {
+    use Engine;
+
+    public function drive() {
+        echo "Car is driving\n";
+    }
+}
+
+$myCar = new Car();
+$myCar->startEngine();
+$myCar->drive();
+$myCar->stopEngine();
+```
+
+# Override traits function
+
+```php
+trait Engine {
+    public function startEngine() {
+        echo "Engine started from trait\n";
+    }
+}
+
+class Car {
+    use Engine;
+
+    // Overriding startEngine method from Engine trait
+    public function startEngine() {
+        echo "Engine started from Car class\n";
+    }
+
+    public function drive() {
+        echo "Car is driving\n";
+    }
+}
+
+$myCar = new Car();
+$myCar->startEngine(); // Outputs: "Engine started from Car class"
+```
+
+---
