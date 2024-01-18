@@ -217,3 +217,135 @@ $myCar->startEngine(); // Outputs: "Engine started from Car class"
 ```
 
 ---
+
+# Abstract class and method
+
+```php
+abstract class Vehicle {
+    protected $wheels;
+
+    public function getWheels() {
+        return $this->wheels;
+    }
+
+    // Abstract method
+    abstract public function startEngine();
+}
+
+class Car extends Vehicle {
+    public function __construct() {
+        $this->wheels = 4;
+    }
+
+    // Implementing the abstract method
+    public function startEngine() {
+        echo "Engine started\n";
+    }
+}
+
+$myCar = new Car();
+echo $myCar->getWheels(); // Outputs: 4
+$myCar->startEngine(); // Outputs: "Engine started"
+```
+
+---
+
+# Anonymous class 
+
+```php
+$myCar = new class {
+    public $make;
+    public $model;
+
+    public function __construct($make, $model) {
+        $this->make = $make;
+        $this->model = $model;
+    }
+
+    public function getMakeAndModel() {
+        return $this->make . ' ' . $this->model;
+    }
+}("Toyota", "Corolla");
+
+echo $myCar->getMakeAndModel(); // Outputs: "Toyota Corolla"
+```
+
+---
+
+# class_exists()
+
+```php
+class Car {
+    // ...
+}
+
+if (class_exists('Car')) {
+    echo "Class 'Car' exists";
+} else {
+    echo "Class 'Car' does not exist";
+}
+
+if (class_exists('Bike')) {
+    echo "Class 'Bike' exists";
+} else {
+    echo "Class 'Bike' does not exist";
+}
+```
+
+---
+
+# get_class_methods()
+
+```php
+class Car {
+    public function startEngine() {
+        // ...
+    }
+
+    public function drive() {
+        // ...
+    }
+
+    private function refuel() {
+        // ...
+    }
+}
+
+$methods = get_class_methods('Car');
+print_r($methods);
+```
+
+Produces:
+```
+Array
+(
+    [0] => startEngine
+    [1] => drive
+)
+```
+
+---
+
+# get_class_vars()
+
+```php
+class Car {
+    public $make = "Toyota";
+    public $model = "Corolla";
+    private $color = "Red";
+}
+
+$properties = get_class_vars('Car');
+print_r($properties);
+```
+
+Produces:
+```
+Array
+(
+    [make] => Toyota
+    [model] => Corolla
+)
+```
+
+---
