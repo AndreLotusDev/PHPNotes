@@ -349,3 +349,48 @@ Array
 ```
 
 ---
+
+# is_object()
+
+```php
+$myCar = new stdClass();
+if (is_object($myCar)) {
+    echo "myCar is an object";
+} else {
+    echo "myCar is not an object";
+}
+```
+
+---
+
+# get_class()
+
+```php
+class Car {
+    // ...
+}
+
+$myCar = new Car();
+echo get_class($myCar); // Outputs: "Car"
+```
+
+---
+
+# method_exists()
+
+```php
+class Car {
+    public function drive() {
+        // ...
+    }
+}
+
+$myCar = new Car();
+if (method_exists($myCar, 'drive')) {
+    echo "Method 'drive' exists in Car";
+} else {
+    echo "Method 'drive' does not exist in Car";
+}
+```
+
+---
