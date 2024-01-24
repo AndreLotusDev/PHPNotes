@@ -28,7 +28,7 @@ main {
     width: 50px;
 }
 
-#nav {
+#navbar {
     display: flex;
     align-items: center;
     justify-content: center;
