@@ -1,5 +1,5 @@
 <footer>
-    <p>Hora de Codar c 2020</p>
+    <p>Hora de Codar © 2020</p>
 </footer>
 </body>
 </html>
