@@ -38,6 +38,15 @@
             createLogsTable($conn);
         } elseif( isset($_POST['drop'])) {
             dropLogsTable($conn);
+        } elseif( isset($_POST['insert'])) {
+            $lipsum = simplexml_load_file('http://www.lipsum.com/feed/xml?amount=1&what=paras&start=0')->lipsum;
+
+            $sqlCommand = "INSERT INTO logs (log) VALUES ('" . $lipsum . "')";
+            if ($conn->query($sqlCommand) === TRUE) {
+                echo "New record insert into table successfully";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
         }
     }
 ?>
@@ -51,11 +60,13 @@
     <form method="post">
         <input id="create" type="submit" name="create" value="Create Logs Table">
         <input id="drop" type="submit" name="drop" value="Drop Logs Table">
+        <!-- Insert logs -->
+        <input id="insert" type="submit" name="insert" value="Insert Logs">
     </form>
 
     <script>
         $(document).ready(function(){
-            $('#create, #drop).click(function(e) {
+            $('#create, #drop, #insert).click(function(e) {
                 var action = this.id;
                 $.ajax({
                     type: "POST",
