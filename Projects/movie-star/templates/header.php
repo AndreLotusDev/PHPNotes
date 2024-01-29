@@ -1,7 +1,18 @@
 <?php
-require_once("helpers/globals.php");
-require_once("helpers/db.php")
-    ?>
+
+    require_once("helpers/globals.php");
+    require_once("helpers/db.php");
+    require_once("models/Message.php");
+
+    $message = new Message($BASE_URL);
+    
+    $flash_message = $message->getMessage();
+
+    if(!empty($flash_message["msg"])) {
+        $message->clearMessage();
+    }
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +77,7 @@ require_once("helpers/db.php")
     </header>
     <?php if (!empty($flash_message)): ?>
         <div class="msg-container">
-            <p class="msg <?= $flash_message["type"] ?>">Testando mensagem</p>
+            <p class="msg <?= $flash_message["type"] ?>"><?= $flash_message["msg"] ?></p>
         </div>
     <?php endif; ?>
+    
