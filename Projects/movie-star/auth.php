@@ -3,7 +3,9 @@
 ?>
 
     <div id="main-container" class="container-fluid">
-        <h1>Corpo do site</h1>
+        <div class="col-md-12">
+            
+        </div>
     </div>
 
 <?php 
