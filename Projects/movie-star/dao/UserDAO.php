@@ -51,9 +51,51 @@
 
         }
         public function findByToken($token) {
+            if($token != "") {
+                $stmt = $this->conn->prepare("SELECT * FROM users WHERE token = :token");
+
+                $stmt->bindParam("token", $token);
+
+                $stmt->execute();
+
+                if($stmt->rowCount() > 0) {
+
+                    $data = $stmt->fetch();
+                    $user = $this->buildUser($data);
+
+                    return $user;
+
+                } else {
+                    return false;
+                }
+            }
 
         }
         public function verifyToken($protected = false) {
+
+            if(!empty($_SESSION["token"])) {
+
+                $token = $_SESSION["token"];
+
+                $user = $this->findByToken($token);
+
+                if ($user) {
+                    return $user;
+                } elseif($protected) {
+
+                    $this->message->setMessage("Faça a autenticação para acessar esta página!", "error",
+                    "index.php");
+                    
+                }
+            } elseif($protected) {
+
+                $this->message->setMessage("Faça a autenticação para acessar esta página!", "error",
+                "index.php");
+                
+            } 
+            else {
+                return false;
+            }
 
         }
         public function setTokenToSession($token, $redirect = true) {
@@ -90,6 +132,12 @@
         }
         public function changePassword(User $user) {
 
+        }
+
+        public function destroyToken() {
+            $_SESSION["token"] = "";
+
+            $this->message->setMessage("Deslogado!","success","index.php");
         }
     }
 ?>
