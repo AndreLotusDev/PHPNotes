@@ -34,6 +34,21 @@
                     $message->setMessage("Esse email já existe em nosso sistema!","error", "back");
                 }
 
+                $user = new User();
+
+                $userToken = $user->generateToken();
+                $finalPassword = $user->generatePassword($password);
+
+                $user->name = $name;
+                $user->lastname = $lastname;
+                $user->email = $email;
+                $user->password = $finalPassword;
+                $user->token = $userToken;
+
+                $auth = true;
+
+                $userDao->create($user);
+
             } else {
                 $message->setMessage("As senhas não são iguais!","error","back");
             }
