@@ -52,10 +52,16 @@ if ($type === "register") {
     }
 
 } else if ($type === "login") {
-    $email = filter_input(INPUT_POST, "email");
+    $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
     $password = filter_input(INPUT_POST, "password");
 
-    $userDAO = new UserDAO($conn, $BASE_URL);
-    $userDAO->authenticateUser($email, $password);
+    if ($userDao->authenticateUser($email, $password)) {
+        $message->setMessage("Seja bem vindo!", "success", "editprofile.php");
+    }
+    else {
+        $message->setMessage("Email ou senha incorretos!", "error", "back");
+    }
+} else {
+    $message->setMessage("Internal server error.", "error","index.php");
 }
 ?>

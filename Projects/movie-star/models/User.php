@@ -23,7 +23,7 @@
 
         public function buildUser($data);
         public function create(User $user, $authUser = false);
-        public function update(User $user);
+        public function update(User $user, $redirect = true);
         public function findByToken($token);
         public function destroyToken();
         public function verifyToken($protected = false);

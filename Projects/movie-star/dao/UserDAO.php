@@ -20,7 +20,7 @@
             
             $user->id = $data["id"];
             $user->name = $data["name"];
-            $user->lastname =  $data["lastname"];
+            $user->lastname =  $data["last_name"];
             $user->email = $data["email"];
             $user->password = $data["password"];
             $user->image = $data["image"];
@@ -35,11 +35,11 @@
                     :name, :last_name, :email, :password, :token
                 )");
 
-            $stmt->bindParam(":name", $user->name, PDO::PARAM_STR);
-            $stmt->bindParam(":last_name", $user->lastname, PDO::PARAM_STR);
-            $stmt->bindParam(":email", $user->email, PDO::PARAM_STR);
-            $stmt->bindParam(":password", $user->password, PDO::PARAM_STR);
-            $stmt->bindParam(":token", $user->token, PDO::PARAM_STR);
+            $stmt->bindParam(":name", $user->name);
+            $stmt->bindParam(":last_name", $user->lastname);
+            $stmt->bindParam(":email", $user->email);
+            $stmt->bindParam(":password", $user->password);
+            $stmt->bindParam(":token", $user->token);
 
             $stmt->execute();
 
@@ -47,8 +47,23 @@
                 $this->setTokenToSession($user->token, true);
             }
         }
-        public function update(User $user) {
+        public function update(User $user, $redirect = true) {
+            $stmt = $this->conn->prepare("UPDATE USERS SET 
+                name = :name, last_name = :last_name, email = :email, password = :password, token = :token
+                WHERE id = :id");
 
+            $stmt->bindParam("name", $user->name, PDO::PARAM_STR);
+            $stmt->bindParam("last_name", $user->lastname, PDO::PARAM_STR);
+            $stmt->bindParam("email", $user->email, PDO::PARAM_STR);
+            $stmt->bindParam("token", $user->token, PDO::PARAM_STR);
+            $stmt->bindParam("password", $user->password, PDO::PARAM_STR);
+            $stmt->bindParam("id", $user->id, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            if($redirect) {
+                $this->message->setMessage("Dados atualizados com sucesso!", "success", "editprofile.php");
+            }
         }
         public function findByToken($token) {
             if($token != "") {
@@ -108,7 +123,28 @@
 
         }
         public function authenticateUser($email, $password) {
+            $user = new User();
 
+            $user = $this->findByEmail($email);
+
+            if($user) {
+
+                if(password_verify($password, $user->password)) {
+
+                    $token = $user->generateToken();
+
+                    $this->setTokenToSession($token, false);
+
+                    $user->token = $token;
+
+                    $this->update($user);
+
+                    return true;
+
+                } 
+            }
+            
+            return false;
         }
         public function findByEmail($email) {
             if($email != "") {
