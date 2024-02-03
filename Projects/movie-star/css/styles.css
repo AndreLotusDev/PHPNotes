@@ -159,8 +159,8 @@
 
 .card-btn {
     color: #000;
-    background-color: #f5c518;
-    border: 2px solid #f5c518;
+    background-color: #f5c518 !important;
+    border: 2px solid #f5c518 !important;
     width: 100%;
 }
 
@@ -246,8 +246,8 @@
 
 .form-btn {
     color: #000;
-    background-color: #f5c518;
-    border: 2px solid #f5c518;
+    background-color: #f5c518 !important;
+    border: 2px solid #f5c518 !important;
 }
 
 .form-btn:hover {
