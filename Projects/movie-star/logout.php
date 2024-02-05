@@ -2,8 +2,8 @@
 
     require_once("templates/header.php");   
 
-    if($userDao) {
-        $userDao->destroyToken();
+    if($userDAO != null) {
+        $userDAO->destroyToken();
     }
 
 ?>

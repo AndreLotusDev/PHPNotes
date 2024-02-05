@@ -49,7 +49,8 @@
         }
         public function update(User $user, $redirect = true) {
             $stmt = $this->conn->prepare("UPDATE USERS SET 
-                name = :name, last_name = :last_name, email = :email, password = :password, token = :token
+                name = :name, last_name = :last_name, email = :email, 
+                password = :password, token = :token, image = :image
                 WHERE id = :id");
 
             $stmt->bindParam("name", $user->name, PDO::PARAM_STR);
@@ -58,6 +59,7 @@
             $stmt->bindParam("token", $user->token, PDO::PARAM_STR);
             $stmt->bindParam("password", $user->password, PDO::PARAM_STR);
             $stmt->bindParam("id", $user->id, PDO::PARAM_STR);
+            $stmt->bindParam("image", $user->image, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -167,6 +169,15 @@
             }
         }
         public function changePassword(User $user) {
+
+            $stmt = $this->conn->prepare("UPDATE users SET password = :password WHERE id = :id");
+
+            $stmt->bindParam("password", $user->password);
+            $stmt->bindParam("id", $user->id);
+
+            $stmt->execute();
+
+            $this->message->setMessage("Senha alterada com sucesso!", "success", "editprofile.php");
 
         }
 
