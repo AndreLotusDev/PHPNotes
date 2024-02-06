@@ -33,7 +33,20 @@
 
         }
         public function getLatestMovies() {
+            $movies = [];
 
+            $stmt = $this->conn->prepare("SELECT * FROM movies ORDER BY id DESC LIMIT 20");
+
+            if($stmt->execute()) {
+                $data = $stmt->fetchAll();
+
+                foreach($data as $movieData) {
+                    $movie = $this->buildMovie($movieData);
+                    $movies[] = $movie;
+                }
+            }
+
+            return $movies;
         }
         public function getMoviesByCategory($category) {
 
