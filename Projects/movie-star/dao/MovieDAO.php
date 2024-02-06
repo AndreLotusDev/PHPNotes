@@ -49,10 +49,40 @@
             return $movies;
         }
         public function getMoviesByCategory($category) {
+            $movies = [];
 
+            $stmt = $this->conn->prepare("SELECT * FROM movies WHERE category = :category ORDER BY id DESC");
+
+            $stmt->bindParam(":category", $category);
+
+            if($stmt->execute()) {
+                $data = $stmt->fetchAll();
+
+                foreach($data as $movieData) {
+                    $movie = $this->buildMovie($movieData);
+                    $movies[] = $movie;
+                }
+            }
+
+            return $movies;
         }
         public function getMoviesByUserId($id) {
+            $movies = [];
 
+            $stmt = $this->conn->prepare("SELECT * FROM movies WHERE users_id = :users_id ORDER BY id DESC");
+
+            $stmt->bindParam(":users_id", $id);
+
+            if($stmt->execute()) {
+                $data = $stmt->fetchAll();
+
+                foreach($data as $movieData) {
+                    $movie = $this->buildMovie($movieData);
+                    $movies[] = $movie;
+                }
+            }
+
+            return $movies;
         }
         public function findById($id) {
 
