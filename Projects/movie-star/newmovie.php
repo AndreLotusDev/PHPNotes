@@ -31,7 +31,7 @@ $userData = $userDao->verifyToken(true);
             </div>
             <div class="form-group">
                 <label for="category">Categoria do filme:</label>
-                <select class="form-control" name="category" id="cateogry">
+                <select class="form-control" name="category" id="category">
                     <option value="">Selecione</option>
                     <option value="Ação">Ação</option>
                     <option value="Drama">Drama</option>

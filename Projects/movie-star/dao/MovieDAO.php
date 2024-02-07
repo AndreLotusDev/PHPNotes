@@ -29,9 +29,11 @@
 
             return $movie;
         }
+
         public function findAll() {
 
         }
+
         public function getLatestMovies() {
             $movies = [];
 
@@ -48,6 +50,7 @@
 
             return $movies;
         }
+
         public function getMoviesByCategory($category) {
             $movies = [];
 
@@ -66,6 +69,7 @@
 
             return $movies;
         }
+
         public function getMoviesByUserId($id) {
             $movies = [];
 
@@ -84,9 +88,31 @@
 
             return $movies;
         }
+
         public function findById($id) {
 
+            $movies = [];
+
+            $stmt = $this->conn->prepare("SELECT * FROM movies WHERE id = :id");
+
+            $stmt->bindParam(":id", $id);
+
+            if($stmt->execute()) {
+                $data = $stmt->fetchAll();
+
+                foreach($data as $movieData) {
+                    $movie = $this->buildMovie($movieData);
+                    $movies[] = $movie;
+                }
+            }
+
+            if(empty($movies)) {
+                return $movies[0];
+            } else {
+                return false;
+            }
         }
+
         public function findByTitle($title) {
 
         }
@@ -107,12 +133,37 @@
 
             $this->message->setMessage("Filme adicionado com sucesso!", "success", "index.php");
         }
-        public function update(Movie $movie) {
 
+        public function update(Movie $movie) {
+            $stmt = $this->conn->prepare(
+                "UPDATE movies SET title = :title, description = :description, image = :image, 
+                trailer = :trailer, category = :category, length = :length WHERE id = :id");
+
+            $stmt->bindParam(":title", $movie->title);
+            $stmt->bindParam(":description", $movie->description);
+            $stmt->bindParam(":image", $movie->image);
+            $stmt->bindParam(":trailer", $movie->trailer);
+            $stmt->bindParam(":category", $movie->category);
+            $stmt->bindParam(":length", $movie->length);
+            $stmt->bindParam(":id", $movie->id);
+
+            $stmt->execute();
+
+            $this->message->setMessage("Filme atualizado com sucesso!", "success", "dashboard.php");
         }
+
         public function destroy($id) {
 
+            $stmt = $this->conn->prepare("DELETE FROM movies WHERE id = :id");
+
+            $stmt->bindParam(":id", $id);
+
+            $stmt->execute();
+
+            $this->message->setMessage("Filme deletado com sucesso!", "success", "dashboard.php");
+
         }
+
     }
 
 ?>
