@@ -570,4 +570,9 @@
     .movie-image-container {
         margin-top: 1rem;
     }
+
+    .card-body {
+        background-color: #1A1A1A;
+        color: #1A1A1A;
+    }
 }

@@ -9,12 +9,14 @@
     $movieDao = new MovieDAO($conn, $BASE_URL);
     $movie = new Movie();
 
+    $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+
     if(empty($id)) {
 
         $message->setMessage("Filme não encontrado", "error", "index.php");
 
     }else {
-    
+
         $movie = $movieDao->findById($id);
     
         if(!$movie) {
@@ -40,7 +42,7 @@
                     <h1><?= $movie->title ?></h1>
                     <p class="page-description">Altere os dados do filme no formulário abaixo:</p>
 
-                    <form action="<? $BASE_URL ?>movie_process.php" method="POST" 
+                    <form action="<?= $BASE_URL ?>movie_process.php" method="POST" 
                     enctype="multipart/form-data">
                         <input type="hidden" name="type" value="update">
                         <input type="hidden" name="id" value="<?= $movie->id ?>">
@@ -83,9 +85,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Descrição:</label>
-                            <textarea class="form-control" name="description" id="description" rows="5">
-                                <?= $movie->description ?>
-                            </textarea>
+                            <textarea class="form-control" name="description" id="description" rows="5"><?= $movie->description ?></textarea>
                         </div>
                         <input type="submit" class="btn form-btn" value="Editar filme">
                     </form>

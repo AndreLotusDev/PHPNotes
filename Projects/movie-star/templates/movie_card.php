@@ -17,7 +17,7 @@ if($movie->image == "" || empty($movie->image)) {
         <p class="card-rating">
 
             <i class="fas fa-star"></i>
-            <span class="rating">9</span>
+            <span class="rating"><?= $movie->rating ?></span>
 
         </p>
 

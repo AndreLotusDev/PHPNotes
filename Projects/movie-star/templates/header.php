@@ -29,7 +29,6 @@
     <!-- Short Icon -->
     <link rel="short icon" href="img/moviestar.ico" type="image/x-icon">
     <!-- CSS -->
-    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -46,6 +45,8 @@
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link rel="stylesheet" href="css/styles.css">
+
     <header>
         <nav class="navbar navbar-expand-lg" id="main-navbar">
             <a href="<?= $BASE_URL ?>" class="navbar-brand">
@@ -58,7 +59,7 @@
                 <i class="fas fa-bars"></i>
             </button>
 
-            <form action="" method="GET" id="search-form" class="form-inline my-2 my-lg-0">
+            <form action="<?= $BASE_URL ?>search.php" method="GET" id="search-form" class="form-inline my-2 my-lg-0">
 
                 <input type="text" name="q" id="search" class="form-control mr-sm-2" type="search" placeholder="Search"
                     aria-label="Search">

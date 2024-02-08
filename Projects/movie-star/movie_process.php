@@ -105,10 +105,11 @@
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
 
         $movieData = $movieDao->findById($id);
+        $movie = $movieDao->findById($id);
 
         if($movieData) {
 
-            if($movie->users_id === $userData->id) {
+            if($movie->users_id == $userData->id) {
                 
                 if(!empty($title) && !empty($description) && !empty($category)) {
                     

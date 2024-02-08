@@ -2,11 +2,14 @@
 
     require_once("templates/header.php");
     require_once("models/Movie.php");
-    require_once("models/MovieDAO.php");
+    require_once("dao/ReviewDAO.php");
+    require_once("dao/MovieDAO.php");
 
     $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
     $movieDao = new MovieDAO($conn, $BASE_URL);
+    $reviewDao = new ReviewDAO($conn, $BASE_URL);
+
     $movie = new Movie();
 
     if(empty($id)) {
@@ -23,6 +26,8 @@
 
     }
 
+    $movieReviews = $reviewDao->getMoviesReviews($id);
+
     if($movie->image == "") {
         $movie->image = "movie_cover.jpg";
     }
@@ -34,6 +39,9 @@
     }
 
     $alreadyReviewed = false;
+    if(!empty($userData)) {
+        $alreadyReviewed = $reviewDao->hasAlreadyReviewed($movie->id, $userData->id);
+    }
 ?>
 <div id="main-container" class="container-fluid">
     <div class="row">
@@ -42,11 +50,11 @@
             <p class="movie-details">
                 <span>Duração: <?= $movie->length ?></span>
                 <span class="pipe"></span>
-                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i><?= $movie->rating ?></span>
             </p>
             <iframe 
                 title="<?= $movie->title ?>"
-                src="<? $movie->trailer ?>" 
+                src="<?= $movie->trailer ?>" 
                 width="560"
                 height="315"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -62,10 +70,10 @@
         <div class="offset-md-1 col-md-10" id="reviews-container">
             <h3 id="reviews-title">Avaliações:</h3>
             <div class="col-md-12" id="review-form-container">
-                <?php if(!empty($userData) && !$userOwnsMovie && !$alreadyMovie): ?>
+                <?php if(!empty($userData) && (!$userOwnsMovie && !$alreadyReviewed)): ?>
                 <h4>Envie sua avaliação</h4>
                 <p class="page-description">Preencha o formulário com a nota e comentário sobre o filme</p>
-                <form action="<? $BASE_URL ?>review_process.php" id="review-form-id" method="POST">
+                <form action="<?= $BASE_URL ?>review_process.php" id="review-form-id" method="POST">
                     <input type="hidden" name="type" value="create">
                     <input type="hidden" name="movies_id" value="<?= $movie->id ?>">
                     <div class="form-group">
@@ -95,26 +103,12 @@
             </div>
 
             <!-- Comentários -->
-            <div class="col-md-12 review">
-                <div class="row">
-                    <div class="col-md-1">
-                        <div class="profile-image-container review-image"
-                        style="background-image: url('<? $BASE_URL ?>img/users/user.png')">
-
-                        </div>
-                    </div>
-                    <div class="col-md-9 author-details-container">
-                        <h4 class="author-name">
-                            <a href="<? $BASE_URL ?>profile.php">Nome do Usuário</a>
-                        </h4>
-                        <p><i class="fas fa-star"></i>9</p>
-                    </div>
-                    <div class="col-md-12">
-                        <p class="comment-title">Comentário: </p>
-                        <p>Este é comentário do usuário</p>
-                    </div>
-                </div>
-            </div>
+            <?php foreach($movieReviews as $review): ?>
+                <?php require("templates/user_review.php"); ?>
+            <?php endforeach; ?>
+            <?php if(empty($movieReviews)): ?>
+                <p class="no-reviews">Nenhuma avaliação cadastrada</p>
+            <?php endif; ?>
         </div>
     </div>
 </div>

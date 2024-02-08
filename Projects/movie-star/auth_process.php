@@ -13,10 +13,10 @@ $type = filter_input(INPUT_POST, "type");
 
 if ($type === "register") {
     $name = filter_input(INPUT_POST, "name");
-    $lastname = filter_input(INPUT_POST, "last_name");
+    $lastname = filter_input(INPUT_POST, "lastname");
     $email = filter_input(INPUT_POST, "email");
     $password = filter_input(INPUT_POST, "password");
-    $confirmPassword = filter_input(INPUT_POST, "confirm_password");
+    $confirmPassword = filter_input(INPUT_POST, "confirmpassword");
 
     //Verify if fields are filled
     if (empty($name) || empty($lastname) || empty($email) || empty($password) || empty($confirmPassword)) {

@@ -53,7 +53,7 @@
 
                 <div class="col-md-12">
 
-                    <h1 class="page-title"><?= $fullName ?></h1>
+                    <h1 class="page-title" style="text-align: center;"><?= $fullName ?></h1>
                     <div id="profile-image-container" 
                         style="background-image: url('<?= $BASE_URL ?>img/users/<?= $userData->image ?>')"></div>
                     <h3 class="about-title">Sobre: </h3>
@@ -69,7 +69,7 @@
 
                     <h3>Filmes que enviou:</h3>
 
-                    <?php foreach($userMovies as $movies): ?>
+                    <?php foreach($userMovies as $movie): ?>
 
                         <?php require("templates/movie_card.php") ?>
 

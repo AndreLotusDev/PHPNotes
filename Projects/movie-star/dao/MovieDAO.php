@@ -2,6 +2,7 @@
 
     require_once("models/Movie.php");
     require_once("models/Message.php");
+    require_once("dao/ReviewDAO.php");
 
     class MovieDAO implements MovieDAOInterface {
         private $conn;
@@ -27,11 +28,29 @@
             $movie->length = $data['length'];
             $movie->users_id = $data['users_id'];
 
+            $reviewDao = new ReviewDAO($this->conn, $this->url);
+            $rating = $reviewDao->getRatings($movie->id);
+
+            $movie->rating = $rating;
+
             return $movie;
         }
 
         public function findAll() {
+            $movies = [];
 
+            $stmt = $this->conn->prepare("SELECT * FROM movies ORDER BY id DESC");
+
+            if($stmt->execute()) {
+                $data = $stmt->fetchAll();
+
+                foreach($data as $movieData) {
+                    $movie = $this->buildMovie($movieData);
+                    $movies[] = $movie;
+                }
+            }
+
+            return $movies;
         }
 
         public function getLatestMovies() {
@@ -91,11 +110,24 @@
 
         public function findById($id) {
 
-            $movies = [];
-
             $stmt = $this->conn->prepare("SELECT * FROM movies WHERE id = :id");
 
             $stmt->bindParam(":id", $id);
+
+            if($stmt->execute()) {
+                $data = $stmt->fetch();
+
+                $movie = $this->buildMovie($data);
+                return $movie;
+            }
+        }
+
+        public function findByTitle($title) {
+            $movies = [];
+
+            $stmt = $this->conn->prepare("SELECT * FROM movies WHERE title LIKE :title ORDER BY id DESC");
+
+            $stmt->bindValue(":title", "%".$title."%");
 
             if($stmt->execute()) {
                 $data = $stmt->fetchAll();
@@ -106,14 +138,7 @@
                 }
             }
 
-            if(empty($movies)) {
-                return $movies[0];
-            } else {
-                return false;
-            }
-        }
-
-        public function findByTitle($title) {
+            return $movies;
 
         }
         public function create(Movie $movie) {
